@@ -1,0 +1,126 @@
+{
+	"id": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+	"name": "open-bank-apis",
+	"description": "open-bank-apis for Backbase Test",
+	"order": [
+		"cbf1ed44-c1fe-2162-9750-b0bbd82f2a9d",
+		"471ecf42-7347-420f-a92a-f627d076d98a",
+		"287a02f3-7fd1-8229-450d-4ad8e62781e2"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1501951057329,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "287a02f3-7fd1-8229-450d-4ad8e62781e2",
+			"headers": "Content-Type: application/json\ntransactiontype: sandbox-payment\nAuthorization: Basic YWRtaW46YWRtaW4=\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "transactiontype",
+					"value": "sandbox-payment",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Authorization",
+					"value": "Basic YWRtaW46YWRtaW4=",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8080/open-bank/v1/getfiltertransactions",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+			"data": [],
+			"dataMode": "raw",
+			"name": "http://localhost:8080/open-bank/v1/getfiltertransactions",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1501951455867,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n\t\"type\":\"sandbox-payment\"\n}"
+		},
+		{
+			"id": "471ecf42-7347-420f-a92a-f627d076d98a",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Basic YWRtaW46YWRtaW4=",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:7777/open-bank/v1/gettransactions",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://localhost:8080/open-bank/v1/gettransactions",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1501951127476,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "cbf1ed44-c1fe-2162-9750-b0bbd82f2a9d",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\ntransactiontype: sandbox-payment\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Basic YWRtaW46YWRtaW4=",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "transactiontype",
+					"value": "sandbox-payment",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:7777/open-bank/v1/gettotalamount",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://localhost:8080/open-bank/v1/gettotalamount",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1501951116687,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
