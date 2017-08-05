@@ -26,7 +26,7 @@ Step 3: open browser and hit the below url :
 
 Step 4: use username – admin and password – admin it will redirect to home page.
 
-Step 5: There are three options are coming on select box [All, sendbox and total amount] test all three cases via select option.
+Step 5: There are three options are coming on select box [List all Transactions, SandBox - Transaction Type and Fetch The Total Amount] test all three cases via select option.
 
 ##Tomcat deploy step
 I have configure maven profile to deploy war into tomcat webapps directory. If you want to test this application on tomcat, simply change the path of your tomcat directory.
