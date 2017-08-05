@@ -1,11 +1,11 @@
 {
-	"id": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+	"id": "0f8612d9-fed5-7d6b-d140-ba2ab5aa1afc",
 	"name": "open-bank-apis",
 	"description": "open-bank-apis for Backbase Test",
 	"order": [
-		"cbf1ed44-c1fe-2162-9750-b0bbd82f2a9d",
-		"471ecf42-7347-420f-a92a-f627d076d98a",
-		"287a02f3-7fd1-8229-450d-4ad8e62781e2"
+		"5a166038-0487-ca15-8d98-74c10d821c5d",
+		"1a915981-6adf-c1e5-7ee3-f647fc721a38",
+		"f13b10c5-d2a6-1ba9-483b-3c4b434136e2"
 	],
 	"folders": [],
 	"folders_order": [],
@@ -14,7 +14,43 @@
 	"public": false,
 	"requests": [
 		{
-			"id": "287a02f3-7fd1-8229-450d-4ad8e62781e2",
+			"id": "1a915981-6adf-c1e5-7ee3-f647fc721a38",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\ntransactiontype: sandbox-payment\n",
+			"headerData": [
+				{
+					"key": "Authorization",
+					"value": "Basic YWRtaW46YWRtaW4=",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "transactiontype",
+					"value": "sandbox-payment",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8080/open-bank/v1/gettotalamount",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "0f8612d9-fed5-7d6b-d140-ba2ab5aa1afc",
+			"data": null,
+			"dataMode": "params",
+			"name": "http://localhost:8080/open-bank/v1/gettotalamount",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1501953834412,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "5a166038-0487-ca15-8d98-74c10d821c5d",
 			"headers": "Content-Type: application/json\ntransactiontype: sandbox-payment\nAuthorization: Basic YWRtaW46YWRtaW4=\n",
 			"headerData": [
 				{
@@ -42,7 +78,7 @@
 			"pathVariableData": [],
 			"preRequestScript": null,
 			"method": "GET",
-			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+			"collectionId": "0f8612d9-fed5-7d6b-d140-ba2ab5aa1afc",
 			"data": [],
 			"dataMode": "raw",
 			"name": "http://localhost:8080/open-bank/v1/getfiltertransactions",
@@ -54,10 +90,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"rawModeData": "{\n\t\"type\":\"sandbox-payment\"\n}"
+			"rawModeData": "{\n\t\"type\":\"sandbox-payment\"\n}",
+			"collection_id": "0f8612d9-fed5-7d6b-d140-ba2ab5aa1afc"
 		},
 		{
-			"id": "471ecf42-7347-420f-a92a-f627d076d98a",
+			"id": "f13b10c5-d2a6-1ba9-483b-3c4b434136e2",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
 			"headerData": [
 				{
@@ -67,55 +104,19 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:7777/open-bank/v1/gettransactions",
+			"url": "http://localhost:8080/open-bank/v1/gettransactions",
 			"queryParams": [],
 			"pathVariables": {},
 			"pathVariableData": [],
 			"preRequestScript": null,
 			"method": "GET",
-			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
+			"collectionId": "0f8612d9-fed5-7d6b-d140-ba2ab5aa1afc",
 			"data": null,
 			"dataMode": "params",
 			"name": "http://localhost:8080/open-bank/v1/gettransactions",
 			"description": "",
 			"descriptionFormat": "html",
-			"time": 1501951127476,
-			"version": 2,
-			"responses": [],
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {}
-		},
-		{
-			"id": "cbf1ed44-c1fe-2162-9750-b0bbd82f2a9d",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\ntransactiontype: sandbox-payment\n",
-			"headerData": [
-				{
-					"key": "Authorization",
-					"value": "Basic YWRtaW46YWRtaW4=",
-					"description": "",
-					"enabled": true
-				},
-				{
-					"key": "transactiontype",
-					"value": "sandbox-payment",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://localhost:7777/open-bank/v1/gettotalamount",
-			"queryParams": [],
-			"pathVariables": {},
-			"pathVariableData": [],
-			"preRequestScript": null,
-			"method": "GET",
-			"collectionId": "e05fa1dd-51ed-4644-74aa-a68d39c123dc",
-			"data": null,
-			"dataMode": "params",
-			"name": "http://localhost:8080/open-bank/v1/gettotalamount",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1501951116687,
+			"time": 1501953860659,
 			"version": 2,
 			"responses": [],
 			"tests": null,
