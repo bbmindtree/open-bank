@@ -7,7 +7,10 @@ Features:
 -	Configured Logback for logging
 -	Application handle exceptions and redelivery feature with delay (both values are configurable)
 -	Tested code on sonar-lint eclipse plugin. 
+
+
 ##Deployment Steps:
+
 Step 1: checkout the project using below command 
 	$ git clone https://github.com/bbmindtree/open-bank.git
 
