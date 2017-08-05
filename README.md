@@ -18,7 +18,7 @@ Step 1: checkout the project using below command
 
 Step 2:run on embedded jetty 
  
- 	Mvn clean install jetty:run
+ 	mvn clean install jetty:run
 
 Step 3: open browser and hit the below url :
 	
