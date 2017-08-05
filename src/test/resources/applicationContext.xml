@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	You under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+       http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- Simple camel route which send every one minute a message on the console. -->
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.openbank" />
+
+	<mvc:annotation-driven />
+
+	<!-- Initialize property-place-holder -->
+	
+	<bean id="applicationProperties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		lazy-init="default">
+		<property name="location" value="classpath:config.properties" />
+	</bean>
+	
+	<!-- Spring MVC view resolver -->
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- ActiveMQ and default broker for unit test -->
+
+	<!-- <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="vm://localhost?broker.persistent=false" />
+	</bean>
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean> -->
+	
+	<!-- Processor -->
+	
+	<bean id="accountTypeProcessor" class="com.openbank.processor.AccountTypeProcessor"/>
+	
+	
+	<!-- Authentication and Authorization -->
+	
+	<import resource="security.xml" />
+
+	<!-- camel context -->
+	
+	<camelContext xmlns="http://camel.apache.org/schema/spring" >
+	
+		 <propertyPlaceholder id="properties" location="classpath:config.properties"/>
+		 
+		 <errorHandler id="noErrorHandler" type="NoErrorHandler"/>
+		 		
+		<!--  exceptions during route execution -->  
+		<onException>
+		
+			 <exception>java.net.ConnectException</exception>
+			 
+			 <exception>java.lang.Exception</exception>	
+			 
+			 <redeliveryPolicy redeliveryDelay="{{delay}}" maximumRedeliveries="{{max}}"/>
+			  
+			<handled>
+			
+				<constant>true</constant>
+				
+			</handled>
+			
+			<to uri="direct:internal/server/exceptions" />
+			
+		</onException>
+		
+				
+		
+		
+		
+		
+		
+		 <!-- Route return  All Transactions -->
+		 
+		<route >
+		
+			<from uri="direct:start" />
+			
+			<removeHeaders pattern="*" />
+			
+			<to uri="{{openbank.apisandbox}}" />
+			
+			<setHeader headerName="Content-Type">
+            
+				<constant>application/json</constant>
+				
+			</setHeader>
+			
+		 </route>
+		
+	 	 		
+			 
+		<!-- Route return  filter Transactions on Transaction type  -->
+		<route >
+		
+			<from uri="restlet:/v1/getfiltertransactions?restletMethods=post,get" />
+			
+			<removeHeaders pattern="*" excludePattern="transactiontype" />
+			
+			
+			
+			<log message="calling openbank api to featch all transactions" loggingLevel="INFO"/>
+			
+			<to uri="{{openbank.apisandbox}}" />
+			
+			<log message="converting JSON to Java object" loggingLevel="INFO"/>
+			
+			<to uri="direct:unmarshal"/>
+            
+            <log message="filtering transactions" loggingLevel="INFO"/>
+            
+			<process ref="accountTypeProcessor"/>
+			
+			<log message="converting Java to JSON" loggingLevel="INFO"/>
+			
+			<to uri="direct:marshal"/>
+			         
+            <setHeader headerName="Content-Type">
+            
+				<constant>application/json</constant>
+				
+			</setHeader>
+			
+		 </route>
+		 
+		 
+		
+		<!-- Route return Total amount for filtered transactions on transaction type-->
+		
+		<route >
+		
+			<from uri="restlet:/v1/gettotalamount?restletMethods=post,get" />
+			
+			<removeHeaders pattern="*" excludePattern="transactiontype"/>
+					
+			<log message="calling openbank api to featch all transactions" loggingLevel="INFO"/>
+			
+			<to uri="{{openbank.apisandbox}}" />
+			
+			<log message="converting JSON to Java object" loggingLevel="INFO"/>
+			
+			<to uri="direct:unmarshal"/>
+			
+			<process ref="accountTypeProcessor"/>
+			
+			<setHeader headerName="Content-Type">
+            
+				<constant>application/json</constant>
+				
+			</setHeader>
+			
+		 </route>
+		 
+		 		 
+		 <!-- Return exception message with 500 error code -->
+		 
+		 <route>
+		
+			<from uri="direct:internal/server/exceptions" />
+			
+			<setHeader headerName="CamelHttpResponseCode">
+			
+				<constant>500</constant>
+				
+			</setHeader>
+			
+			<setHeader headerName="Content-Type">
+			
+				<constant>application/json</constant>
+				
+			</setHeader>
+			
+			<setBody>
+			
+				<simple>{"errors":[{"code":"500" , "message":"${exception.message}"}]}</simple>
+				
+			</setBody>
+			
+		 </route>
+		 
+		 <route id="marshaling-route">
+		 
+		 	<from uri="direct:marshal"/>
+		 	
+		 	<marshal>
+			
+                <json library="Jackson"/>
+                
+            </marshal>
+		 	
+		 </route>
+		 
+		 <route id="unmarshaling-route">
+		 
+		 	<from uri="direct:unmarshal"/>
+		 	
+		 	<unmarshal>
+		 	
+                <json library="Jackson" unmarshalTypeName="com.openbank.model.Account" disableFeatures="FAIL_ON_UNKNOWN_PROPERTIES"/>
+                
+            </unmarshal>
+		 	
+		 </route>
+		
+	</camelContext>
+	 
+	<!-- initialize restletComponent into context  -->
+	
+	<bean id="restletComponent" class="org.restlet.Component" />
+	
+	<!-- initialize restletComponentService into context  -->
+	
+	<bean id="restletComponentService" class="org.apache.camel.component.restlet.RestletComponent">
+	
+		<constructor-arg index="0">
+		
+			<ref bean="restletComponent" />
+			
+		</constructor-arg>
+		
+	</bean>
+
+</beans>
