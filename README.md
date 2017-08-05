@@ -35,6 +35,16 @@ Step 1: open pom.xml and change the <tomcat.webapp.dir> property value to your t
 Step 2: build the project with deploy-war profile
 	
 	mvn clean install –Pdeploy-war
+	
+	
+##Exposed three endpoints:
+
+1- /v1/gettransactions with Basic Authentication header parameter [username - admin, password - admin ]
+
+2- /v1/getfiltertransactions with header parameter key - transactiontype  value - sandbox-payment and Basic Authentication
+
+3- /v1/gettotalamount with header parameter key - transactiontype  value - sandbox-payment and Basic Authentication
+
 
 ##Environment test:
 Operating system- windows 
