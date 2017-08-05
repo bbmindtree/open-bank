@@ -211,9 +211,9 @@ function getTransactionsTotal() {
 				<h2>Account Details :</h2>
 				<select id="selected" onchange="myFunction()">
 					<option value="select">Select</option>
-					<option value="all">All</option>
-					<option value="sandbox">SandBox</option>
-					<option value="total">Total Amount</option>
+					<option value="all">List all Transactions</option>
+					<option value="sandbox">SandBox - Transaction Type</option>
+					<option value="total">Fetch The Total Amount</option>
 				</select>
 				<div id="showData"></div>
 
