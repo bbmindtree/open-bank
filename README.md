@@ -1,5 +1,6 @@
 ##Summary:
-Open Bank application is developed on Spring MVC with the help of camel Spring DSL. Configured in memory spring security. Application showing all transactions, filter transactions and total amount of filtered transactions, for this application expose three endpoints. Application also cover Unit test for all above scenarios. 
+Open Bank application is developed on Spring MVC with the help of camel Spring DSL. Configured in memory spring security. Application showing all transactions, filter transactions and total amount of filtered transactions, for this application expose three endpoints. Application also cover Unit test for all above scenarios.
+ 
 Features:
 -	Used jetty embedded web servlet container to startup the web application in maven   
 -	Used camel to route web service call
