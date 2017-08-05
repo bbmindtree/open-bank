@@ -205,10 +205,9 @@ function getTransactionsTotal() {
 	<div class="container">
 		<div class="content">
 
-			<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+			<span style="float:right"><a href="<c:url value="/j_spring_security_logout" />"> Logout</a></span>
 
 			<div>
-				<br /> <br />
 				<h2>Account Details :</h2>
 				<select id="selected" onchange="myFunction()">
 					<option value="select">Select</option>
