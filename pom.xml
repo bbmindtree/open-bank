@@ -29,6 +29,7 @@
 		<spring.test.version>3.2.2.RELEASE</spring.test.version>
 		<maven.compiler.version>2.3.2</maven.compiler.version>
 		<jetty.version>7.5.3.v20111011</jetty.version>
+		<tomcat.webapp.dir>D:\software\apache-tomcat-8.5.6\webapps</tomcat.webapp.dir>
 	</properties>
 
 	<dependencies>
@@ -271,7 +272,7 @@
 						<version>2.3</version>
 						<configuration>
 							<warName>open-bank</warName>
-							<outputDirectory>D:\software\apache-tomcat-8.5.6\webapps</outputDirectory>
+							<outputDirectory>${tomcat.webapp.dir}</outputDirectory>
 						</configuration>
 					</plugin>
 				</plugins>
