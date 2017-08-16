@@ -1,7 +1,6 @@
 package com.openbank.controller.impl;
 
 import org.apache.camel.Produce;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
