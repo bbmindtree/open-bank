@@ -14,7 +14,7 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 		<intercept-url pattern="/v1/**" access="ROLE_USER" />
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/loginfailed" />
-	<logout logout-success-url="/logout" invalidate-session="true" />
+		<logout logout-success-url="/logout" invalidate-session="true" />
 
 	</http>
 

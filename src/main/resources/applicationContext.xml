@@ -30,13 +30,13 @@
 	<mvc:annotation-driven />
 
 	<!-- Initialize property-place-holder -->
-	
+
 	<bean id="applicationProperties"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
 		lazy-init="default">
 		<property name="location" value="classpath:config.properties" />
 	</bean>
-	
+
 	<!-- Spring MVC view resolver -->
 
 	<bean id="viewResolver"
@@ -45,190 +45,223 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	
+
 	<!-- Processor -->
-	
-	<bean id="accountTypeProcessor" class="com.openbank.processor.AccountTypeProcessor"/>
-	
-	
+
+	<bean id="accountTypeProcessor" class="com.openbank.processor.AccountTypeProcessor" />
+
+
 	<!-- Authentication and Authorization -->
-	
+
 	<import resource="security.xml" />
 
 	<!-- camel context -->
-	
-	<camelContext xmlns="http://camel.apache.org/schema/spring" >
-	
-		 <propertyPlaceholder id="properties" location="classpath:config.properties"/>
-		 
-		 <errorHandler id="noErrorHandler" type="NoErrorHandler"/>
-		 		
-		<!--  exceptions during route execution -->  
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+
+		<propertyPlaceholder id="properties"
+			location="classpath:config.properties" />
+
+		<errorHandler id="noErrorHandler" type="NoErrorHandler" />
+
+
+		<!-- exceptions during route execution -->
 		<onException id="common-exception-route">
-		
-			 <exception>java.net.ConnectException</exception>
-			 
-			 <exception>java.lang.Exception</exception>	
-			 
-			 <redeliveryPolicy redeliveryDelay="{{delay}}" maximumRedeliveries="{{max}}"/>
-			  
+
+			<exception>java.net.ConnectException</exception>
+
+			<exception>java.lang.Exception</exception>
+
+			<redeliveryPolicy redeliveryDelay="{{delay}}"
+				maximumRedeliveries="{{max}}" />
+
 			<handled>
-			
+
 				<constant>true</constant>
-				
+
 			</handled>
-			
+
 			<to uri="direct:internal/server/exceptions" />
-			
+
 		</onException>
-		
-				
-		<!-- Route return  All Transactions -->
-		 
+
+		<!-- also enable swagger api, using the apiContextPath and enable CORS 
+			so the swagger-ui web console can access the swagger api docs -->
+		<!-- <restConfiguration component="netty4-http" bindingMode="json"
+			contextPath="/rest/*" port="7777"
+			apiContextPath="/api-docs" apiContextListing="true" enableCORS="true">
+
+			we want json output in pretty mode
+			<dataFormatProperty key="prettyPrint" value="true" />
+
+			setup swagger api descriptions
+			<apiProperty key="base.path" value="rest" />
+			<apiProperty key="api.version" value="1.2.3" />
+			<apiProperty key="api.title" value="User Services" />
+			<apiProperty key="api.description"
+				value="Camel Rest Example with Swagger that provides an User REST service" />
+			<apiProperty key="api.contact.name" value="The Apache Camel team" />
+
+		</restConfiguration> -->
+
+
+		<!-- Route return All Transactions -->
+
 		<route id="all-transaction-route">
-		
-			<from uri="restlet:/v1/gettransactions" />
-			
+
+			<!-- <from uri="restlet:/v1/gettransactions" /> -->
+
+			<from uri="direct:allTransactions" />
+
 			<removeHeaders pattern="*" />
-			
+
 			<to uri="{{openbank.apisandbox}}" />
-			
+
 			<setHeader headerName="Content-Type">
-            
+
 				<constant>application/json</constant>
-				
+
 			</setHeader>
-			
-		 </route>
-		
-	 	 		
-			 
-		<!-- Route return  filter Transactions on Transaction type  -->
+
+		</route>
+
+
+
+		<!-- Route return filter Transactions on Transaction type -->
 		<route id="filter-transaction-route">
-		
-			<from uri="restlet:/v1/getfiltertransactions?restletMethods=post,get" />
-			
+
+			<!-- <from uri="restlet:/v1/getfiltertransactions?restletMethods=post,get" 
+				/> -->
+
+			<from uri="direct:filteredTransactions" />
+
 			<removeHeaders pattern="*" excludePattern="transactiontype" />
-			
-			<log message="calling openbank api to featch all transactions" loggingLevel="INFO"/>
-			
+
+			<log message="calling openbank api to featch all transactions"
+				loggingLevel="INFO" />
+
 			<to uri="{{openbank.apisandbox}}" />
-			
-			<log message="converting JSON to Java object" loggingLevel="INFO"/>
-			
-			<to uri="direct:unmarshal"/>
-            
-            <log message="filtering transactions" loggingLevel="INFO"/>
-            
-			<process ref="accountTypeProcessor"/>
-			
-			<log message="converting Java to JSON" loggingLevel="INFO"/>
-			
-			<to uri="direct:marshal"/>
-			         
-            <setHeader headerName="Content-Type">
-            
+
+			<log message="converting JSON to Java object" loggingLevel="INFO" />
+
+			<to uri="direct:unmarshal" />
+
+			<log message="filtering transactions" loggingLevel="INFO" />
+
+			<process ref="accountTypeProcessor" />
+
+			<log message="converting Java to JSON" loggingLevel="INFO" />
+
+			<to uri="direct:marshal" />
+
+			<setHeader headerName="Content-Type">
+
 				<constant>application/json</constant>
-				
+
 			</setHeader>
-			
-		 </route>
-		 
-		 
-		
-		<!-- Route return Total amount for filtered transactions on transaction type-->
-		
+
+		</route>
+
+
+
+		<!-- Route return Total amount for filtered transactions on transaction 
+			type -->
+
 		<route id="totalamount-route">
-		
-			<from uri="restlet:/v1/gettotalamount?restletMethods=post,get" />
-			
-			<removeHeaders pattern="*" excludePattern="transactiontype"/>
-					
-			<log message="calling openbank api to featch all transactions" loggingLevel="INFO"/>
-			
+
+			<!-- <from uri="restlet:/v1/gettotalamount?restletMethods=post,get" /> -->
+
+			<from uri="direct:filteredTransactionsTotalAmt" />
+
+			<removeHeaders pattern="*" excludePattern="transactiontype" />
+
+			<log message="calling openbank api to featch all transactions"
+				loggingLevel="INFO" />
+
 			<to uri="{{openbank.apisandbox}}" />
-			
-			<log message="converting JSON to Java object" loggingLevel="INFO"/>
-			
-			<to uri="direct:unmarshal"/>
-			
-			<process ref="accountTypeProcessor"/>
-			
+
+			<log message="converting JSON to Java object" loggingLevel="INFO" />
+
+			<to uri="direct:unmarshal" />
+
+			<process ref="accountTypeProcessor" />
+
 			<setHeader headerName="Content-Type">
-            
+
 				<constant>application/json</constant>
-				
+
 			</setHeader>
-			
-		 </route>
-		 
-		 		 
-		 <!-- Return exception message with 500 error code -->
-		 
-		 <route id="retutn-exception-response-route">
-		
+
+		</route>
+
+
+		<!-- Return exception message with 500 error code -->
+
+		<route id="retutn-exception-response-route">
+
 			<from uri="direct:internal/server/exceptions" />
-			
+
 			<setHeader headerName="CamelHttpResponseCode">
-			
+
 				<constant>500</constant>
-				
+
 			</setHeader>
-			
+
 			<setHeader headerName="Content-Type">
-			
+
 				<constant>application/json</constant>
-				
+
 			</setHeader>
-			
+
 			<setBody>
-			
+
 				<simple>{"errors":[{"code":"500" , "message":"${exception.message}"}]}</simple>
-				
+
 			</setBody>
-			
-		 </route>
-		 
-		 <route id="marshaling-route">
-		 
-		 	<from uri="direct:marshal"/>
-		 	
-		 	<marshal>
-			
-                <json library="Jackson"/>
-                
-            </marshal>
-		 	
-		 </route>
-		 
-		 <route id="unmarshaling-route">
-		 
-		 	<from uri="direct:unmarshal"/>
-		 	
-		 	<unmarshal>
-		 	
-                <json library="Jackson" unmarshalTypeName="com.openbank.model.Account" disableFeatures="FAIL_ON_UNKNOWN_PROPERTIES"/>
-                
-            </unmarshal>
-		 	
-		 </route>
-		
+
+		</route>
+
+		<route id="marshaling-route">
+
+			<from uri="direct:marshal" />
+
+			<marshal>
+
+				<json library="Jackson" />
+
+			</marshal>
+
+		</route>
+
+		<route id="unmarshaling-route">
+
+			<from uri="direct:unmarshal" />
+
+			<unmarshal>
+
+				<json library="Jackson" unmarshalTypeName="com.openbank.model.Account"
+					disableFeatures="FAIL_ON_UNKNOWN_PROPERTIES" />
+
+			</unmarshal>
+
+		</route>
+
 	</camelContext>
-	 
-	<!-- initialize restletComponent into context  -->
-	
+
+	<!-- initialize restletComponent into context -->
+
 	<bean id="restletComponent" class="org.restlet.Component" />
-	
-	<!-- initialize restletComponentService into context  -->
-	
+
+	<!-- initialize restletComponentService into context -->
+
 	<bean id="restletComponentService" class="org.apache.camel.component.restlet.RestletComponent">
-	
+
 		<constructor-arg index="0">
-		
+
 			<ref bean="restletComponent" />
-			
+
 		</constructor-arg>
-		
+
 	</bean>
 
 </beans>

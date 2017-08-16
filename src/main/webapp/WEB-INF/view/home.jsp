@@ -1,3 +1,4 @@
+<%@page import="com.openbank.util.CommonConstant"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +41,7 @@ function myFunction() {
 
 function CreateAllTableFromJSON() {
 
-    var url = '<%= request.getContextPath()%>/v1/gettransactions';
+    var url = '<%= request.getContextPath()%><%=CommonConstant.ALL_TRANSACTIONS_MAPPING%>';
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
     xhr.send();
@@ -110,7 +111,7 @@ function CreateSandboxTableFromJSON() {
     console.log("sandbox selected");
 
 
-    var url = '<%= request.getContextPath()%>/v1/getfiltertransactions';
+    var url = '<%= request.getContextPath()%><%=CommonConstant.FILTERED_TRANSACTIONS_MAPPING%>';
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
@@ -182,7 +183,7 @@ function getTransactionsTotal() {
     console.log("sandbox selected");
 
 
-    var url = '<%= request.getContextPath()%>/v1/gettotalamount';
+    var url = '<%= request.getContextPath()%><%=CommonConstant.FILTERED_TRANSACTIONS_TOTAL_AMT_MAPPING%>';
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
@@ -205,7 +206,8 @@ function getTransactionsTotal() {
 	<div class="container">
 		<div class="content">
 
-			<span style="float:right"><a href="<c:url value="/j_spring_security_logout" />"> Logout</a></span>
+			<span style="float: right"><a
+				href="<c:url value="/j_spring_security_logout" />"> Logout</a></span>
 
 			<div>
 				<h2>Account Details :</h2>

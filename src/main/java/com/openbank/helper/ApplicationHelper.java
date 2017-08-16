@@ -43,7 +43,7 @@ public class ApplicationHelper {
 
 	public static void setExchangeBody(Exchange exchange, Account account, double totalAmmount) {
 				
-		if (exchange.getFromEndpoint().getEndpointUri().contains(CommonConstant.FILTER_TRANSACTION_URI)) {
+		if (exchange.getFromEndpoint().getEndpointUri().equals(CommonConstant.FILTERED_TRANSACTIONS_DIRECT)) {
 
 			exchange.getOut().setBody(account);
 			

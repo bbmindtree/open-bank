@@ -76,10 +76,18 @@
 			<artifactId>camel-jms</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-swagger-java</artifactId>
+			<version>${camel.version}</version>
+			<!-- use the same version as your Camel core version -->
+		</dependency>
 		<!-- Spring Web -->
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-web</artifactId> 
-			<version>${spring.version}</version> </dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -97,6 +105,7 @@
 
 			</exclusions>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
@@ -206,6 +215,15 @@
 			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -220,7 +238,15 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<warName>open-bank</warName>
+					<outputDirectory>${tomcat.webapp.dir}</outputDirectory>
+				</configuration>
+			</plugin>
 			<!-- plugin so you can run mvn jetty:run -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -256,11 +282,11 @@
 					</compilerArguments>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>deploy-war</id>
